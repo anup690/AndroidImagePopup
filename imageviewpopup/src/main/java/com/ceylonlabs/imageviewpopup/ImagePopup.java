@@ -142,12 +142,21 @@ public class ImagePopup extends ImageView {
                 });
             }
 
+            View container;
+            container = layout;
+            
+            /*for compatibility with Marshmallow onwards*/
+            if (android.os.Build.VERSION.SDK_INT > 22) {
+                container = (View) layout.getParent();
+            }
+
             /** Background dim part **/
             WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-            WindowManager.LayoutParams layoutParams = (WindowManager.LayoutParams) layout.getLayoutParams();
+            WindowManager.LayoutParams layoutParams = (WindowManager.LayoutParams) container.getLayoutParams();
             layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
             layoutParams.dimAmount = 0.3f;
-            windowManager.updateViewLayout(layout, layoutParams);
+            windowManager.updateViewLayout(container, layoutParams);
+
 
         }catch (Exception e){
             e.printStackTrace();
